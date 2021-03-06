@@ -19,8 +19,10 @@ let score = 0;
 let mouseX = 0;
 let mouseY = canvas.height / 2;
 document.addEventListener('mousemove', (event) => {
-  mouseX = event.pageX;
-  mouseY = event.pageY;
+  if (!gameOver) {
+    mouseX = event.pageX;
+    mouseY = event.pageY;
+  }
 });
 
 window.addEventListener('keydown', (event) => {
@@ -54,7 +56,7 @@ setInterval(() => {
   if (max > 3 && !audio.paused) {
     particles.push(new Particle(max));
   }
-}, 150);
+}, 100);
 
 clearCanvas();
 context.fillStyle = '#fff';
@@ -130,7 +132,7 @@ function Particle(r) {
     this.y = mouseY;
   }
   this.r = r;
-  this.speed = r / 2;
+  this.speed = r / 3;
   this.update = function() {
     this.x -= this.speed;
     if (!gameOver) {
