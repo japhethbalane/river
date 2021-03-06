@@ -18,6 +18,8 @@ let gameOver = false;
 let score = localStorage.getItem('score')
 if (score == null) {
   score = 0;
+} else {
+  score = parseInt(score);
 }
 
 let mouseX = 0;
