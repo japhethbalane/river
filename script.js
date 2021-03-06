@@ -14,7 +14,11 @@ let particles = [];
 let max = 0;
 let playerRadius = 10;
 let gameOver = false;
-let score = 0;
+
+let score = localStorage.getItem('score')
+if (score == null) {
+  score = 0;
+}
 
 let mouseX = 0;
 let mouseY = canvas.height / 2;
@@ -34,7 +38,7 @@ window.addEventListener('keydown', (event) => {
 document.addEventListener('click', () => {
   if (gameOver) {
     particles = [];
-    score = 0;
+    // score = 0;
     audio.currentTime = 0;
     gameOver = false;
   }
@@ -67,7 +71,7 @@ context.textBaseline = 'middle';
 context.font = '30px serif';
 context.fillText('River-Dodge', canvas.width / 2, canvas.height / 2);
 context.font = '15px serif';
-context.fillText('(click to play)', canvas.width / 2, canvas.height / 2 + 40);
+context.fillText('( FREE to play )', canvas.width / 2, canvas.height / 2 + 40);
 function loop() {
   if (!audio.paused) {
     clearCanvas();
@@ -119,7 +123,7 @@ function loop() {
       context.fillText('Score : ' + score, canvas.width / 2, canvas.height / 2 - 40);
       context.fillText('Good Game', canvas.width / 2, canvas.height / 2);
       context.font = '15px serif';
-      context.fillText('(click here to play again)', canvas.width / 2, canvas.height / 2 + 40);
+      context.fillText('( click here to play again )', canvas.width / 2, canvas.height / 2 + 40);
     }
   }
   window.requestAnimationFrame(loop);
@@ -142,6 +146,7 @@ function Particle(r) {
         score += this.r;
       }
       if (getHypothenuse(this, {x: mouseX, y: mouseY}) < this.r + playerRadius + max) {
+        localStorage.setItem('score', score);
         gameOver = true;
       }
     }
