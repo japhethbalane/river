@@ -67,8 +67,8 @@ context.fillText('River-Dodge', canvas.width / 2, canvas.height / 2);
 context.font = '15px serif';
 context.fillText('(click to play)', canvas.width / 2, canvas.height / 2 + 40);
 function loop() {
-  clearCanvas();
   if (!audio.paused) {
+    clearCanvas();
     bufferLength = analyser.frequencyBinCount;
 
     dataArray = new Uint8Array(bufferLength);
@@ -126,6 +126,9 @@ function loop() {
 function Particle(r) {
   this.x = canvas.width + r;
   this.y = randomBetween(0, canvas.height);
+  if (randomBetween(0, 2) == 1) {
+    this.y = mouseY;
+  }
   this.r = r;
   this.speed = r / 2;
   this.update = function() {
@@ -190,7 +193,21 @@ function drawWaveform() {
     }
     x += sliceWidth;
   }
-  context.lineTo(canvas.width, mouseY);
+  context.stroke();
+
+  context.beginPath();
+  sliceWidth = canvas.width / bufferLength;
+  y = 0;
+  for(let i = 0; y < canvas.height; i++) {
+    let v = dataArray[i] / 128;
+    let x = v * mouseX;
+    if(i === 0) {
+      context.moveTo(x, y);
+    } else {
+      context.lineTo(x, y);
+    }
+    y += sliceWidth;
+  }
   context.stroke();
 };
 
